@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PeptidePen Co. — Precision Peptide Delivery</title>
+  <meta name="description" content="Clinical-grade peptide delivery engineered for precision. The PeptidePen by PeptidePen Co.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Montserrat:ital,wght@0,400;0,500;0,600;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav" id="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><img src="assets/logo2.png" alt="PeptidePen Co."></a>
+
+        <ul class="nav-links">
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+
+        <a href="store.html" class="btn btn-primary nav-cta">Shop Now</a>
+
+        <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="nav-mobile-panel" id="navPanel">
+        <ul class="nav-mobile-links">
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+        <a href="store.html" class="btn btn-primary btn-full">Shop Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Simple. Precise. Yours.</p>
+      <h1>Precision Starts With<br><em>the Right Tools</em></h1>
+      <p class="hero-desc">
+        Taking control of your health starts with having the right supplies. From autoinjector
+        pens to starter kits, we make dosing straightforward for everyone.
+      </p>
+      <div class="hero-actions">
+        <a href="store.html" class="btn btn-primary">Shop Now</a>
+        <a href="how-it-works.html" class="btn btn-outline">How It Works</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <!-- Replace with <img src="assets/hero-product.jpg" alt="PeptidePen Pro"> -->
+      <div class="hero-placeholder">
+        <div class="ph-tall"></div>
+        Product Photography
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRODUCT SHOWCASE ── -->
+  <section class="section product-showcase">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Featured Product</p>
+        <h2>The PeptidePen</h2>
+        <p class="section-desc">
+          Our flagship precision delivery system — engineered for subcutaneous peptide administration.
+        </p>
+      </div>
+
+      <div class="product-card-featured">
+        <div class="pf-image">
+          <!-- Replace with <img src="assets/product-pro.jpg" alt="PeptidePen Pro"> -->
+          <div class="ph-product">
+            <div class="ph-product-box"></div>
+            Product Image
+          </div>
+        </div>
+
+        <div class="pf-body">
+          <span class="product-tag">GLP-1 Compatible</span>
+          <h2>PeptidePen Pro</h2>
+          <p>
+            Designed for precise subcutaneous delivery of peptide compounds.
+            Calibrated dosing mechanism, medical-grade materials, and a form
+            factor built for daily use.
+          </p>
+          <div class="product-price">
+            $0.00 <sub>/ per unit</sub>
+          </div>
+          <div class="hero-actions">
+            <a href="store.html" class="btn btn-primary">View in Store</a>
+            <a href="how-it-works.html" class="btn btn-outline">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <p>
+            Precision peptide delivery systems engineered to clinical standards.
+            Built for accuracy. Designed for life.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="store.html">Store</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">FDA Disclaimer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 PeptidePen Co. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav    = document.getElementById('nav');
+    const toggle = document.querySelector('.nav-toggle');
+    const panel  = document.getElementById('navPanel');
+
+    // Hamburger toggle
+    toggle.addEventListener('click', () => {
+      const isOpen = panel.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close menu when a link is tapped
+    panel.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        panel.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+
+</body>
+</html>
