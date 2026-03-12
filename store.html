@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Montserrat:ital,wght@0,400;0,500;0,600;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css?v=2">
+  <link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body>
 
@@ -62,68 +62,8 @@
   <!-- ── PRODUCT GRID ── -->
   <section class="section">
     <div class="container">
-      <div class="products-grid">
-
-        <!-- Product 1 — update href to your Shopify product URL -->
-        <div class="product-card">
-          <div class="product-thumb">
-            <!-- <img src="assets/product-pro.jpg" alt="PeptidePen Pro"> -->
-            <div class="ph-sm"></div>
-          </div>
-          <div class="product-info">
-            <span class="product-tag">Bestseller</span>
-            <h3>PeptidePen Pro</h3>
-            <p>
-              Our flagship precision delivery system. Calibrated for subcutaneous
-              administration with microgram accuracy and medical-grade materials.
-            </p>
-            <div class="product-card-footer">
-              <span class="pc-price">$0.00</span>
-              <a href="https://peptidepenco-2.myshopify.com" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Buy Now</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 2 -->
-        <div class="product-card">
-          <div class="product-thumb">
-            <!-- <img src="assets/product-starter.jpg" alt="PeptidePen Starter Kit"> -->
-            <div class="ph-sm"></div>
-          </div>
-          <div class="product-info">
-            <span class="product-tag">Starter Kit</span>
-            <h3>PeptidePen Starter</h3>
-            <p>
-              Everything you need to begin your peptide protocol — pen,
-              cartridges, needle tips, and a full setup guide included.
-            </p>
-            <div class="product-card-footer">
-              <span class="pc-price">$0.00</span>
-              <a href="https://peptidepenco-2.myshopify.com" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Buy Now</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="product-card">
-          <div class="product-thumb">
-            <!-- <img src="assets/product-cartridges.jpg" alt="Replacement Cartridges"> -->
-            <div class="ph-sm"></div>
-          </div>
-          <div class="product-info">
-            <span class="product-tag">Refill</span>
-            <h3>Replacement Cartridges</h3>
-            <p>
-              Medical-grade replacement cartridges compatible with all
-              PeptidePen models. Sold in packs of 10.
-            </p>
-            <div class="product-card-footer">
-              <span class="pc-price">$0.00</span>
-              <a href="https://peptidepenco-2.myshopify.com" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Buy Now</a>
-            </div>
-          </div>
-        </div>
-
+      <div class="products-grid" id="productsGrid">
+        <p id="products-loading" style="color:var(--gray);grid-column:1/-1;text-align:center;">Loading products…</p>
       </div>
     </div>
   </section>
@@ -169,6 +109,92 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // ── Shopify Storefront API ──
+    const SHOPIFY_DOMAIN = 'peptidepenco-2.myshopify.com';
+    const STOREFRONT_TOKEN = 'aff81598adbf890c258761da5bab6fb1';
+
+    async function loadProducts() {
+      const query = `{
+        products(first: 20) {
+          edges {
+            node {
+              title
+              handle
+              description
+              priceRange {
+                minVariantPrice { amount currencyCode }
+              }
+              images(first: 1) {
+                edges {
+                  node { url altText }
+                }
+              }
+            }
+          }
+        }
+      }`;
+
+      try {
+        const res = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
+          },
+          body: JSON.stringify({ query })
+        });
+
+        const { data } = await res.json();
+        const products = data.products.edges.map(e => e.node);
+        renderProducts(products);
+      } catch (err) {
+        document.getElementById('products-loading').textContent =
+          'Unable to load products. Please visit our store directly.';
+        console.error('Shopify fetch error:', err);
+      }
+    }
+
+    function renderProducts(products) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
+
+      if (products.length === 0) {
+        grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1;text-align:center;">No products found.</p>';
+        return;
+      }
+
+      products.forEach(product => {
+        const image = product.images.edges[0]?.node;
+        const price = parseFloat(product.priceRange.minVariantPrice.amount);
+        const currency = product.priceRange.minVariantPrice.currencyCode;
+        const productUrl = `https://${SHOPIFY_DOMAIN}/products/${product.handle}`;
+
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="product-thumb">
+            ${image
+              ? `<img src="${image.url}" alt="${image.altText || product.title}">`
+              : '<div class="ph-sm"></div>'
+            }
+          </div>
+          <div class="product-info">
+            <h3>${product.title}</h3>
+            <p>${product.description || ''}</p>
+            <div class="product-card-footer">
+              <span class="pc-price">${currency === 'USD' ? '$' : currency}${price.toFixed(2)}</span>
+              <a href="${productUrl}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Buy Now</a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    loadProducts();
+  </script>
 
   <script>
     const toggle = document.querySelector('.nav-toggle');
