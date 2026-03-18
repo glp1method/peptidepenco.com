@@ -108,45 +108,6 @@
     </div>
   </section>
 
-  <!-- ── PRODUCT SHOWCASE ── -->
-  <section class="section product-showcase">
-    <div class="container">
-      <div class="section-header">
-        <p class="section-eyebrow">Featured Product</p>
-        <h2>The PeptidePen</h2>
-        <p class="section-desc">
-          Our precision delivery system — engineered for subcutaneous peptide administration.
-        </p>
-      </div>
-
-      <div class="product-card-featured">
-        <div class="pf-image" id="featuredImage">
-          <div class="ph-product">
-            <div class="ph-product-box"></div>
-            Product Image
-          </div>
-        </div>
-
-        <div class="pf-body">
-          <span class="product-tag">GLP-1 Compatible</span>
-          <h2 id="featuredTitle">PeptidePen Pro</h2>
-          <p id="featuredDesc">
-            Designed for precise subcutaneous delivery of peptide compounds.
-            Calibrated dosing mechanism, medical-grade materials, and a form
-            factor built for daily use.
-          </p>
-          <div class="product-price">
-            <span id="featuredPrice">$0.00</span> <sub>/ per unit</sub>
-          </div>
-          <div class="hero-actions">
-            <a href="https://peptidepenco-2.myshopify.com" target="_blank" rel="noopener noreferrer" id="featuredLink" class="btn btn-primary">View in Store</a>
-            <a href="how-it-works.html" class="btn btn-outline">Learn More</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="container">
@@ -200,11 +161,6 @@
           edges {
             node {
               title
-              handle
-              description
-              priceRange {
-                minVariantPrice { amount currencyCode }
-              }
               images(first: 1) {
                 edges {
                   node { url altText }
@@ -229,31 +185,13 @@
         const product = data.products.edges[0]?.node;
         if (!product) return;
 
-        const image    = product.images.edges[0]?.node;
-        const price    = parseFloat(product.priceRange.minVariantPrice.amount);
-        const currency = product.priceRange.minVariantPrice.currencyCode;
-        const url      = `https://${SHOPIFY_DOMAIN}/products/${product.handle}`;
+        const image = product.images.edges[0]?.node;
 
         // Hero visual
         if (image) {
           document.getElementById('heroVisual').innerHTML =
             `<img src="${image.url}" alt="${image.altText || product.title}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
         }
-
-        // Featured product section
-        if (image) {
-          document.getElementById('featuredImage').innerHTML =
-            `<img src="${image.url}" alt="${image.altText || product.title}" style="width:100%;height:100%;object-fit:cover;">`;
-        }
-        document.getElementById('featuredTitle').textContent = product.title;
-        if (product.description) {
-          document.getElementById('featuredDesc').textContent = product.description;
-        }
-        document.getElementById('featuredPrice').textContent =
-          `${currency === 'USD' ? '$' : currency}${price.toFixed(2)}`;
-        document.getElementById('featuredLink').href = url;
-        document.getElementById('featuredLink').target = '_blank';
-        document.getElementById('featuredLink').rel = 'noopener noreferrer';
 
       } catch (err) {
         console.error('Shopify fetch error:', err);
