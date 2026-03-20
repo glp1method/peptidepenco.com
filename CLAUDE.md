@@ -31,7 +31,7 @@ Products are fetched live from the Shopify Storefront API on page load.
 - **API endpoint:** `https://peptidepenco-2.myshopify.com/api/2024-01/graphql.json`
 - **Token:** `aff81598adbf890c258761da5bab6fb1` (public Storefront API token — safe for frontend)
 - **index.html** — fetches first product; populates hero image, featured product section (title, description, price, image, buy link)
-- All "Shop Now" / "Buy Now" buttons across the site link directly to `https://peptidepenco-2.myshopify.com` and open in a new tab (`target="_blank"`)
+- All "Shop Now" / "Buy Now" buttons across the site link directly to `https://peptidepenco-2.myshopify.com` and open in the same tab (no `target="_blank"`)
 - `store.html` was removed — the Shopify store serves as the product page
 
 ## Design System
